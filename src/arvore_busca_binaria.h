@@ -7,9 +7,9 @@
 
 // estrutura do Nó da árvore
 typedef struct No {
-    int valor;              // Valor armazenado no nó
-    struct No* esquerda;    // Ponteiro para a subárvore à esquerda
-    struct No* direita;     // Ponteiro para a subárvore à direita
+    int valor;              // valor armazenado no nó
+    struct No* esquerda;    // ponteiro para a subárvore à esquerda
+    struct No* direita;     // ponteiro para a subárvore à direita
 } No;
 
 // funções declaradas:

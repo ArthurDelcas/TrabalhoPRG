@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "abb.h"
 #include "arvore_busca_binaria.h"
 
 void exibirMenu() {
@@ -8,10 +7,9 @@ void exibirMenu() {
     printf("2. Remover valor\n");
     printf("3. Buscar valor\n");
     printf("4. Exibir Em-Ordem (Crescente)\n");
-    printf("5. Exibir Pre-Ordem\n");
-    printf("6. Exibir Pos-Ordem\n");
+    printf("5. Exibir Pré-Ordem\n");
+    printf("6. Exibir Pós-Ordem\n");
     printf("0. Sair\n");
-    printf("Escolha uma opcao: ");
 }
 
 int main() {
@@ -22,8 +20,8 @@ int main() {
     do {
         exibirMenu();
         if (scanf("%d", &opcao) != 1) {
-            printf("Entrada invalida!\n");
-            // Limpa o buffer em caso de entrada não numérica
+            printf("Entrada inválida!\n");
+            // limpa o buffer se a entrada não for um número
             while(getchar() != '\n');
             continue;
         }
@@ -39,39 +37,39 @@ int main() {
                 printf("Digite o valor para remover: ");
                 scanf("%d", &valor);
                 raiz = removerNo(raiz, valor);
-                printf("Comando de remocao executado para o valor %d.\n", valor);
+                printf("Comando de remoção executado para o valor %d.\n", valor);
                 break;
             case 3:
                 printf("Digite o valor para buscar: ");
                 scanf("%d", &valor);
                 resultado = buscar(raiz, valor);
                 if (resultado != NULL) {
-                    printf(">>> Valor %d ENCONTRADO na arvore.\n", valor);
+                    printf(" Valor (%d) ENCONTRADO na árvore.\n", valor);
                 } else {
-                    printf(">>> Valor %d NAO ENCONTRADO.\n", valor);
+                    printf(" O valor informado (%d) NÃO FOI ENCONTRADO na árvore.\n", valor);
                 }
                 break;
             case 4:
-                printf("Arvore Em-Ordem: ");
+                printf("Árvore Em-Ordem: ");
                 imprimirEmOrdem(raiz);
                 printf("\n");
                 break;
             case 5:
-                printf("Arvore Pre-Ordem: ");
+                printf("Árvore Pre-Ordem: ");
                 imprimirPreOrdem(raiz);
                 printf("\n");
                 break;
             case 6:
-                printf("Arvore Pos-Ordem: ");
+                printf("Árvore Pos-Ordem: ");
                 imprimirPosOrdem(raiz);
                 printf("\n");
                 break;
             case 0:
-                printf("Limpando a memoria e encerrando o programa...\n");
+                printf("Limpando a memória e encerrando o programa...\n");
                 liberarArvore(raiz);
                 break;
             default:
-                printf("Opcao invalida! Tente novamente.\n");
+                printf("Opcão inválida! Tente novamente \n");
         }
     } while (opcao != 0);
 
