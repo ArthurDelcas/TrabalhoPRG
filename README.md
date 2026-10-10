@@ -1,4 +1,4 @@
-# Projeto: Árvore de Busca Binária (ABB) e Algoritmos de Ordenação
+# Projeto: Árvore de Busca Binária
 
 **Curso:** Engenharia de Telecomunicações
 **Disciplina:** Programação II
