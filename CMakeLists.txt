@@ -8,4 +8,4 @@ set(CMAKE_C_STANDARD 99)
 include_directories(src)
 
 # Cria o executável a partir dos arquivos fonte
-add_executable(projeto_bst src/main.c src/bst.c)
+add_executable(TrabalhoPRG src/main.c src/arvore_busca_binaria.c)

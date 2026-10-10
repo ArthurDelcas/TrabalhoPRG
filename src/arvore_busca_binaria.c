@@ -3,130 +3,130 @@
 #include "arvore_busca_binaria.h"
 
 // Cria um novo nó, alocando memória dinamicamente
-Node* createNode(int value) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    if (newNode == NULL) {
+No* criarNo(int valor) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    if (novoNo == NULL) {
         printf("Erro: Falha na alocação de memória.\n");
         exit(1);
     }
-    newNode->value = value;
-    newNode->left = NULL;
-    newNode->right = NULL;
-    return newNode;
+    novoNo->valor = valor;
+    novoNo->esquerda = NULL;
+    novoNo->direita = NULL;
+    return novoNo;
 }
 
-// Insere um novo valor respeitando a regra da BST
-Node* insert(Node* root, int value) {
+// Insere um novo valor respeitando a regra da Árvore de Busca Binária
+No* inserir(No* raiz, int valor) {
     // Caso base: se a árvore/subárvore estiver vazia, cria e retorna o novo nó
-    if (root == NULL) {
-        return createNode(value);
+    if (raiz == NULL) {
+        return criarNo(valor);
     }
 
-    // Se o valor for menor, insere na subárvore esquerda
-    if (value < root->value) {
-        root->left = insert(root->left, value);
-    } 
-    // Se o valor for maior, insere na subárvore direita
-    else if (value > root->value) {
-        root->right = insert(root->right, value);
+    // Se o valor for menor, insere na subárvore à esquerda
+    if (valor < raiz->valor) {
+        raiz->esquerda = inserir(raiz->esquerda, valor);
+    }
+    // Se o valor for maior, insere na subárvore à direita
+    else if (valor > raiz->valor) {
+        raiz->direita = inserir(raiz->direita, valor);
     }
     // Valores duplicados são ignorados nesta implementação
 
-    return root;
+    return raiz;
 }
 
 // Busca um valor específico na árvore
-Node* search(Node* root, int value) {
+No* buscar(No* raiz, int valor) {
     // Caso base: raiz nula ou valor encontrado
-    if (root == NULL || root->value == value) {
-        return root;
+    if (raiz == NULL || raiz->valor == valor) {
+        return raiz;
     }
 
-    // Se o valor for maior que o da raiz, busca na direita
-    if (root->value < value) {
-        return search(root->right, value);
+    // Se o valor buscado for maior que o da raiz atual, busca na direita
+    if (raiz->valor < valor) {
+        return buscar(raiz->direita, valor);
     }
 
     // Caso contrário, busca na esquerda
-    return search(root->left, value);
+    return buscar(raiz->esquerda, valor);
 }
 
-// Encontra o menor valor de uma subárvore (usado na remoção)
+// Encontra o menor valor de uma subárvore (usado principalmente na remoção)
 // O menor valor sempre estará o mais à esquerda possível
-Node* findMin(Node* root) {
-    Node* current = root;
-    while (current && current->left != NULL) {
-        current = current->left;
+No* encontrarMinimo(No* raiz) {
+    No* atual = raiz;
+    while (atual && atual->esquerda != NULL) {
+        atual = atual->esquerda;
     }
-    return current;
+    return atual;
 }
 
 // Remove um nó da árvore tratando os 3 casos possíveis
-Node* removeNode(Node* root, int value) {
-    if (root == NULL) return root;
+No* removerNo(No* raiz, int valor) {
+    if (raiz == NULL) return raiz;
 
     // Navega pela árvore até encontrar o nó a ser removido
-    if (value < root->value) {
-        root->left = removeNode(root->left, value);
-    } else if (value > root->value) {
-        root->right = removeNode(root->right, value);
+    if (valor < raiz->valor) {
+        raiz->esquerda = removerNo(raiz->esquerda, valor);
+    } else if (valor > raiz->valor) {
+        raiz->direita = removerNo(raiz->direita, valor);
     } else {
         // Nó encontrado. Avaliando os casos de remoção:
 
-        // Caso 1 e 2: Nó com apenas um filho ou nenhum filho (folha)
-        if (root->left == NULL) {
-            Node* temp = root->right;
-            free(root);
-            return temp;
-        } else if (root->right == NULL) {
-            Node* temp = root->left;
-            free(root);
-            return temp;
+        // Casos 1 e 2: Nó com apenas um filho ou nenhum filho (folha)
+        if (raiz->esquerda == NULL) {
+            No* temporario = raiz->direita;
+            free(raiz);
+            return temporario;
+        } else if (raiz->direita == NULL) {
+            No* temporario = raiz->esquerda;
+            free(raiz);
+            return temporario;
         }
 
-        // Caso 3: Nó com dois filhos. 
-        // Solução: Substituir o valor do nó pelo menor valor da subárvore direita (sucessor em-ordem)
-        Node* temp = findMin(root->right);
-        root->value = temp->value; // Copia o valor do sucessor
-        
-        // Remove o sucessor original da subárvore direita
-        root->right = removeNode(root->right, temp->value);
+        // Caso 3: Nó com dois filhos.
+        // Solução: Substituir o valor do nó pelo menor valor da subárvore à direita (sucessor)
+        No* temporario = encontrarMinimo(raiz->direita);
+        raiz->valor = temporario->valor; // Copia o valor do sucessor
+
+        // Remove o sucessor original da subárvore à direita
+        raiz->direita = removerNo(raiz->direita, temporario->valor);
     }
-    return root;
+    return raiz;
 }
 
-// Percorre a árvore Em-Ordem (Esquerda, Raiz, Direita) - Imprime os valores em ordem crescente
-void printInOrder(Node* root) {
-    if (root != NULL) {
-        printInOrder(root->left);
-        printf("%d ", root->value);
-        printInOrder(root->right);
+// Percorre a árvore Em-Ordem (Esquerda, Raiz, Direita) - Imprime em ordem crescente
+void imprimirEmOrdem(No* raiz) {
+    if (raiz != NULL) {
+        imprimirEmOrdem(raiz->esquerda);
+        printf("%d ", raiz->valor);
+        imprimirEmOrdem(raiz->direita);
     }
 }
 
 // Percorre a árvore em Pré-Ordem (Raiz, Esquerda, Direita)
-void printPreOrder(Node* root) {
-    if (root != NULL) {
-        printf("%d ", root->value);
-        printPreOrder(root->left);
-        printPreOrder(root->right);
+void imprimirPreOrdem(No* raiz) {
+    if (raiz != NULL) {
+        printf("%d ", raiz->valor);
+        imprimirPreOrdem(raiz->esquerda);
+        imprimirPreOrdem(raiz->direita);
     }
 }
 
 // Percorre a árvore em Pós-Ordem (Esquerda, Direita, Raiz)
-void printPostOrder(Node* root) {
-    if (root != NULL) {
-        printPostOrder(root->left);
-        printPostOrder(root->right);
-        printf("%d ", root->value);
+void imprimirPosOrdem(No* raiz) {
+    if (raiz != NULL) {
+        imprimirPosOrdem(raiz->esquerda);
+        imprimirPosOrdem(raiz->direita);
+        printf("%d ", raiz->valor);
     }
 }
 
-// Libera toda a memória alocada para a árvore, evitando memory leaks
-void freeTree(Node* root) {
-    if (root != NULL) {
-        freeTree(root->left);
-        freeTree(root->right);
-        free(root); // Libera o nó atual em pós-ordem para não perder a referência dos filhos
+// Libera toda a memória alocada para a árvore
+void liberarArvore(No* raiz) {
+    if (raiz != NULL) {
+        liberarArvore(raiz->esquerda);
+        liberarArvore(raiz->direita);
+        free(raiz); // Libera o nó atual em pós-ordem para não perder a referência dos filhos
     }
 }
